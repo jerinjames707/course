@@ -1,9 +1,17 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from 'react'
 import Navbar from './Navbar'
 
 const View = () => {
-    var post=
-    [{"_id":"6285a2a31887dc001619415c","courseTitle":"Python Django Internship","courseDescription":"Internship programme","courseDuration":"3 months","courseVenue":"ONLINE","courseDate":"02/01/2023"},{"_id":"6285a2c21887dc001619415d","courseTitle":"MERN Stack","courseDescription":"Internship programme","courseDuration":"6 months","courseVenue":"ONLINE","courseDate":"02/06/2022"}]
+    var [viewlist,setViewlist]=useState([])
+    var[loadstatus,setLoadstatus]=useState(true)
+    axios.get("https://mylinkurcodesapp.herokuapp.com/getcourses").then(
+        (response)=>{
+            console.log(response.data)
+            setViewlist(response.data)
+            setLoadstatus(false)
+        }
+    )
     
   return (
     <div>
@@ -15,7 +23,9 @@ const View = () => {
             
             
   
-    <table class="table">
+    {loadstatus ? <div class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div> : <table class="table">
   <thead>
     <tr>
       <th scope="col">Title</th>
@@ -28,7 +38,7 @@ const View = () => {
   </thead>
    
     <tbody>
-    {post.map((value,key)=>{
+    {viewlist.map((value,key)=>{
                     return  <tr>
       <th scope="row">{value.courseTitle}</th>
       <td>{value.courseDescription}</td>
@@ -43,7 +53,7 @@ const View = () => {
                 })}
                  </tbody>
   </table>
-
+}
             </div>
         </div>
     </div>
